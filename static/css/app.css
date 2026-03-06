@@ -22,7 +22,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text);
     background:
         radial-gradient(circle at top left, rgba(232, 180, 74, 0.35), transparent 28%),
@@ -175,9 +175,9 @@ textarea {
 }
 
 .button.tiny {
-    padding: 0.45rem 0.85rem;
+    padding: 0.35rem 0.7rem;
     border-radius: 999px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .ghost-button {
@@ -253,7 +253,7 @@ textarea {
 h1,
 h2 {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.2;
 }
 
