@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}TODO APP{% endblock %}
+
+{% block content %}
+<section class="dashboard-head panel">
+    <div>
+        <p class="eyebrow">Personal dashboard</p>
+        <h1>{{ user.username }}'s tasks</h1>
+        <p class="hero-text">Track priorities, update progress, and keep your work organized in one place.</p>
+    </div>
+    <a class="button primary" href="{% url 'todo-create' %}">Add new task</a>
+</section>
+
+<section class="stats-grid">
+    <article class="panel stat-card">
+        <p class="mini-label">Total</p>
+        <h2>{{ total_count }}</h2>
+    </article>
+    <article class="panel stat-card">
+        <p class="mini-label">Open</p>
+        <h2>{{ open_count }}</h2>
+    </article>
+    <article class="panel stat-card">
+        <p class="mini-label">Completed</p>
+        <h2>{{ done_count }}</h2>
+    </article>
+</section>
+
+<section class="panel toolbar">
+    <div class="chip-row">
+        <a class="chip {% if status == 'all' %}active{% endif %}" href="?status=all&q={{ query|urlencode }}">All</a>
+        <a class="chip {% if status == 'open' %}active{% endif %}" href="?status=open&q={{ query|urlencode }}">Open</a>
+        <a class="chip {% if status == 'done' %}active{% endif %}" href="?status=done&q={{ query|urlencode }}">Completed</a>
+    </div>
+    <form method="get" class="search-form">
+        <input type="hidden" name="status" value="{{ status }}">
+        <input type="search" name="q" value="{{ query }}" class="text-input" placeholder="Search by title or description">
+        <button type="submit" class="button secondary small">Filter</button>
+    </form>
+</section>
+
+<section class="task-grid">
+    {% for todo in todos %}
+        <article class="panel task-card {% if todo.is_completed %}is-done{% endif %}">
+            <div class="task-topline">
+                <span class="status-pill {% if todo.is_completed %}done{% else %}open{% endif %}">
+                    {% if todo.is_completed %}Completed{% else %}Open{% endif %}
+                </span>
+                <span class="priority-badge priority-{{ todo.priority|lower }}">{{ todo.get_priority_display }}</span>
+            </div>
+            <h2>{{ todo.title }}</h2>
+            <p class="task-description">
+                {% if todo.description %}
+                    {{ todo.description }}
+                {% else %}
+                    No description added yet.
+                {% endif %}
+            </p>
+            <dl class="task-meta">
+                <div>
+                    <dt>Due date</dt>
+                    <dd>{% if todo.due_date %}{{ todo.due_date|date:'M d, Y' }}{% else %}No due date{% endif %}</dd>
+                </div>
+                <div>
+                    <dt>Updated</dt>
+                    <dd>{{ todo.updated_at|date:'M d, Y g:i A' }}</dd>
+                </div>
+            </dl>
+            <div class="task-actions">
+                <form method="post" action="{% url 'todo-toggle' todo.pk %}" class="inline-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="button secondary small">
+                        {% if todo.is_completed %}Mark open{% else %}Mark done{% endif %}
+                    </button>
+                </form>
+                <a href="{% url 'todo-update' todo.pk %}" class="button muted small">Edit</a>
+                <a href="{% url 'todo-delete' todo.pk %}" class="button muted small">Delete</a>
+            </div>
+        </article>
+    {% empty %}
+        <article class="panel empty-state">
+            <p class="mini-label">Nothing here yet</p>
+            <h2>Start with your first task.</h2>
+            <p>Create a todo item to see it appear in your dashboard.</p>
+            <a class="button primary" href="{% url 'todo-create' %}">Create task</a>
+        </article>
+    {% endfor %}
+</section>
+{% endblock %}
