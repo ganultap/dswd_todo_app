@@ -9,7 +9,9 @@
         <h1>{{ user.username }}'s tasks</h1>
         <p class="hero-text">Track priorities, update progress, and keep your work organized in one place.</p>
     </div>
-    <a class="button primary tiny" href="{% url 'todo-create' %}">Add new task</a>
+    <a class="button primary tiny" href="{% url 'todo-create' %}" data-tooltip="Add new task">
+        <i data-feather="plus"></i>
+    </a>
 </section>
 
 <section class="stats-grid">
@@ -36,7 +38,9 @@
     <form method="get" class="search-form">
         <input type="hidden" name="status" value="{{ status }}">
         <input type="search" name="q" value="{{ query }}" class="text-input" placeholder="Search by title or description">
-        <button type="submit" class="button secondary small">Filter</button>
+        <button type="submit" class="button secondary small" data-tooltip="Filter">
+            <i data-feather="search"></i>
+        </button>
     </form>
 </section>
 
@@ -68,15 +72,26 @@
                 </div>
             </dl>
             <div class="task-actions">
-                <form method="post" action="{% url 'todo-toggle' todo.pk %}" class="inline-form">
+                <form method="post" action="{% url 'todo-toggle' todo.pk %}" class="inline-form toggle-form">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                    <button type="submit" class="button secondary small">
-                        {% if todo.is_completed %}Mark open{% else %}Mark done{% endif %}
+                    <button type="submit" class="button secondary small" data-tooltip="{% if todo.is_completed %}Mark open{% else %}Mark done{% endif %}">
+                        {% if todo.is_completed %}
+                            <i data-feather="undo"></i>
+                        {% else %}
+                            <i data-feather="check"></i>
+                        {% endif %}
                     </button>
                 </form>
-                <a href="{% url 'todo-update' todo.pk %}" class="button muted small">Edit</a>
-                <a href="{% url 'todo-delete' todo.pk %}" class="button muted small">Delete</a>
+                <a href="{% url 'todo-update' todo.pk %}" class="button muted small" data-tooltip="Edit">
+                    <i data-feather="edit-2"></i>
+                </a>
+                <form method="post" action="{% url 'todo-delete' todo.pk %}" class="inline-form delete-form">
+                    {% csrf_token %}
+                    <button type="submit" class="button muted small" data-tooltip="Delete">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </form>
             </div>
         </article>
     {% empty %}
@@ -88,4 +103,65 @@
         </article>
     {% endfor %}
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+
+        // Handle task toggle with SweetAlert
+        document.querySelectorAll('.toggle-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const form = this;
+                const isCompleted = form.closest('.task-card').classList.contains('is-done');
+                
+                Swal.fire({
+                    title: isCompleted ? 'Mark as Open?' : 'Mark as Done?',
+                    text: isCompleted ? 'This task will be marked as open.' : 'This task will be marked as completed.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#1f6a5a',
+                    cancelButtonColor: '#6f655d',
+                    customClass: {
+                        popup: 'swal-popup'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // Handle delete with SweetAlert
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const form = this;
+                
+                Swal.fire({
+                    title: 'Delete Task?',
+                    text: 'This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#af4a37',
+                    cancelButtonColor: '#6f655d',
+                    customClass: {
+                        popup: 'swal-popup'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}
