@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Task | TODO APP{% endblock %}
+
+{% block content %}
+<section class="editor-shell">
+    <div class="panel form-panel">
+        <p class="eyebrow">Delete task</p>
+        <h1>Remove "{{ object.title }}"?</h1>
+        <p class="hero-text">This action cannot be undone.</p>
+        <form method="post" class="stack-form">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="button danger">Delete task</button>
+                <a href="{% url 'todo-list' %}" class="button muted">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

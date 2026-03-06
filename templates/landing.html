@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}TODO APP{% endblock %}
+
+{% block content %}
+<section class="hero panel">
+    <div class="hero-copy">
+        <p class="eyebrow">Personal todo app</p>
+        <h1>Organize your tasks effortlessly.</h1>
+        <p class="hero-text">
+            An app for creating tasks with authentication, protected routes, and a clean mobile-friendly dashboard.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary" href="{% url 'signup' %}">Create account</a>
+            <a class="button secondary" href="{% url 'login' %}">Sign in</a>
+        </div>
+    </div>
+    <div class="hero-card panel soft-panel">
+        <p class="mini-label">What is included</p>
+        <ul class="feature-list">
+            <li>Secure registration and login</li>
+            <li>CRUD for personal tasks</li>
+            <li>Status toggles and filters</li>
+            <li>Responsive layout</li>
+        </ul>
+    </div>
+</section>
+
+<section class="info-grid">
+    <article class="panel info-card">
+        <p class="mini-label">Authentication</p>
+        <h2>Secure by default</h2>
+        <p>Routes require login, and users only access their own data.</p>
+    </article>
+    <article class="panel info-card">
+        <p class="mini-label">Usability</p>
+        <h2>Simple workflow</h2>
+        <p>Create, update, search, and complete tasks quickly.</p>
+    </article>
+    <article class="panel info-card">
+        <p class="mini-label">Delivery</p>
+        <h2>Ready to run</h2>
+        <p>Includes setup instructions, tests, and a clean Django structure.</p>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} | TODO APP{% endblock %}
+
+{% block content %}
+<section class="editor-shell">
+    <div class="panel form-panel">
+        <p class="eyebrow">Task editor</p>
+        <h1>{{ page_title }}</h1>
+        <form method="post" class="stack-form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="field-error">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                {% if field.name == 'is_completed' %}
+                    <label class="checkbox-card" for="{{ field.id_for_label }}">
+                        {{ field }}
+                        <span>Mark this task as completed</span>
+                    </label>
+                    {% for error in field.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% else %}
+                    <div class="field-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="form-actions">
+                <button type="submit" class="button primary">{{ submit_label }}</button>
+                <a href="{% url 'todo-list' %}" class="button muted">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

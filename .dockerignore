@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Static & Media (can be served from volume)
+staticfiles/
+media/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Local virtual environment
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
