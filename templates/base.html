@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static '../images/todo_icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/todo_icon.png' %}">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
@@ -19,7 +19,7 @@
     <div class="page-shell">
         <header class="site-header panel">
             <a class="brand" href="{% url 'landing' %}">
-                <img src="{% static 'images/todo_icon.png' %}" alt="TODO APP" class="brand-img">
+                <span class="brand-mark">TA</span>
                 <span>TODO APP</span>
             </a>
             <nav class="site-nav">
