@@ -103,6 +103,12 @@ textarea {
     letter-spacing: 0.03em;
 }
 
+.brand-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.8rem;
+}
+
 .brand-mark {
     display: inline-grid;
     place-items: center;
